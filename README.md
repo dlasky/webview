@@ -1,15 +1,10 @@
 # webview
 
-[![Join the chat at https://gitter.im/zserge/webview](https://badges.gitter.im/zserge/webview.svg)](https://gitter.im/zserge/webview?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/zserge/webview.svg?branch=master)](https://travis-ci.org/zserge/webview)
-[![Build status](https://ci.appveyor.com/api/projects/status/ksii33qx18d94h6v?svg=true)](https://ci.appveyor.com/project/zserge/webview)
-[![GoDoc](https://godoc.org/github.com/zserge/webview?status.svg)](https://godoc.org/github.com/zserge/webview)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zserge/webview)](https://goreportcard.com/report/github.com/zserge/webview)
+## This is a fork of zserge/webview that adds gtk_layer_shell support for sway/wayland
 
+## On arch install:
 
-A tiny cross-platform webview library for C/C++/Golang to build modern cross-platform GUIs. Also, there are [Rust bindings](https://github.com/Boscop/webview-rs), [Python bindings](https://github.com/zserge/webview-python), [Nim bindings](https://github.com/oskca/webview), [Haskell](https://github.com/lettier/webviewhs) and [C# bindings](https://github.com/iwillspeak/webview-cs) available.
-
-**IMPORTANT NOTE: Webview is now being rewritten from scratch, with the support of EdgeHTML and using C++14 as a primary language (code becomes much shorter/cleaner, and we still have C and Go APIs as the primary interface). Please have a look at [webview-x](https://github.com/zserge/webview/tree/webview-x) branch before opening new issues. Current version of webview is still maintained, PRs with bugfixes are welcome, but new functionality will be added to the new branch. I expect to finish the new branch before March 2019, but no hard deadlines.**
+`yay -S gtk-layer-shell-git`
 
 It supports two-way JavaScript bindings (to call JavaScript from C/C++/Go and to call C/C++/Go from JavaScript).
 
@@ -34,7 +29,7 @@ Import the package and start using it:
 ```go
 package main
 
-import "github.com/zserge/webview"
+import "github.com/dlasky/webview"
 
 func main() {
 	// Open wikipedia in a 800x600 resizable window
@@ -48,16 +43,6 @@ It is not recommended to use `go run` (although it works perfectly fine on Linux
 ```bash
 # Linux
 $ go build -o webview-example && ./webview-example
-
-# MacOS uses app bundles for GUI apps
-$ mkdir -p example.app/Contents/MacOS
-$ go build -o example.app/Contents/MacOS/example
-$ open example.app # Or click on the app in Finder
-
-# Windows requires special linker flags for GUI apps.
-# It's also recommended to use TDM-GCC-64 compiler for CGo.
-# http://tdm-gcc.tdragon.net/download
-$ go build -ldflags="-H windowsgui" -o webview-example.exe
 ```
 
 ### API
@@ -70,8 +55,8 @@ First of all, you probably want to embed your assets (HTML/CSS/JavaScript) into 
 
 Now there are two major approaches to deploy the content:
 
-* Serve HTML/CSS/JS with an embedded HTTP server
-* Injecting HTML/CSS/JS via the JavaScript binding API
+- Serve HTML/CSS/JS with an embedded HTTP server
+- Injecting HTML/CSS/JS via the JavaScript binding API
 
 To serve the content it is recommended to use ephemeral ports:
 
@@ -150,7 +135,10 @@ to open the web inspector). On Windows there is no easy to way to enable
 debugging, but you may include Firebug in your HTML code:
 
 ```html
-<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+<script
+  type="text/javascript"
+  src="https://getfirebug.com/firebug-lite.js"
+></script>
 ```
 
 Even though Firebug browser extension development has been stopped, Firebug
@@ -225,10 +213,10 @@ int webview(const char *title, const char *url, int width, int height, int resiz
 
 The following URL schemes are supported:
 
-* `http://` and `https://`, no surprises here.
-* `file:///` can be useful if you want to unpack HTML/CSS assets to some
+- `http://` and `https://`, no surprises here.
+- `file:///` can be useful if you want to unpack HTML/CSS assets to some
   temporary directory and point a webview to open index.html from there.
-* `data:text/html,<html>...</html>` allows to pass short HTML data inline
+- `data:text/html,<html>...</html>` allows to pass short HTML data inline
   without using a web server or polluting the file system. Further
   modifications of the webview contents can be done via JavaScript bindings.
 
@@ -286,8 +274,9 @@ window.external.invoke(JSON.stringify({fn: 'sum', x: 5, y: 3}));
 
 Webview library is meant to be used from a single UI thread only. So if you
 want to call `webview_eval` or `webview_terminate` from some background thread
+
 - you have to use `webview_dispatch` to post some arbitrary function with some
-context to be executed inside the main UI thread:
+  context to be executed inside the main UI thread:
 
 ```c
 // This function will be executed on the UI thread
