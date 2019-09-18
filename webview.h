@@ -302,16 +302,17 @@ WEBVIEW_API int webview_init(struct webview *w) {
 
   // LAYER SHELL SUPPORT
   gtk_layer_init_for_window (w->priv.window);
-  gtk_layer_set_layer (w->priv.window, GTK_LAYER_SHELL_LAYER_BOTTOM);
+  gtk_layer_set_layer (w->priv.window, GTK_LAYER_SHELL_LAYER_TOP);
   gtk_layer_auto_exclusive_zone_enable (w->priv.window);
-  gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_LEFT, 40);
-  gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_RIGHT, 40);
-  gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_TOP, 20);
+  // gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_LEFT, 40);
+  // gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_RIGHT, 40);
+  // gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_TOP, 20);
   // gtk_layer_set_margin (w->priv.window, GTK_LAYER_SHELL_EDGE_BOTTOM, 0);
-  static const gboolean anchors[] = {TRUE, TRUE, FALSE, TRUE};
-  for (int i = 0; i < GTK_LAYER_SHELL_EDGE_ENTRY_NUMBER; i++) {
-    gtk_layer_set_anchor (w->priv.window, i, anchors[i]);
-  }
+  gtk_layer_set_anchor(w->priv.window, GTK_LAYER_SHELL_EDGE_LEFT, TRUE);
+  gtk_layer_set_anchor(w->priv.window, GTK_LAYER_SHELL_EDGE_RIGHT, TRUE);
+  gtk_layer_set_anchor(w->priv.window, GTK_LAYER_SHELL_EDGE_TOP, TRUE);
+  gtk_layer_set_anchor(w->priv.window, GTK_LAYER_SHELL_EDGE_BOTTOM, FALSE);
+
 
   gtk_window_set_title(GTK_WINDOW(w->priv.window), w->title);
 
