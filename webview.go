@@ -12,7 +12,7 @@ package webview
 
 /*
 #cgo linux openbsd freebsd CFLAGS: -DWEBVIEW_GTK=1
-#cgo linux openbsd freebsd pkg-config: gtk+-3.0 webkit2gtk-4.0
+#cgo linux openbsd freebsd pkg-config: gtk+-3.0 webkit2gtk-4.0 gtk-layer-shell-0
 
 #cgo windows CFLAGS: -DWEBVIEW_WINAPI=1
 #cgo windows LDFLAGS: -lole32 -lcomctl32 -loleaut32 -luuid -lgdi32
